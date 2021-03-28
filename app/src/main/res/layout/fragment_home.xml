@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.HomeFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="masoumi.formularenderer.viewmodel.HomeViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/til_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_formula_to_search"
+            app:startIconDrawable="@drawable/ic_submit"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                style="@style/Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox"
+                android:id="@+id/search_bar"
+                android:lines="1"
+                android:imeOptions="actionDone"
+                android:inputType="textAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_formula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/til_search"
+            app:layout_constraintStart_toStartOf="@id/til_search"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@{viewModel.formula}"
+            tools:text="Formula goes here"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_formula"
+            app:layout_constraintStart_toStartOf="@id/til_search"
+            android:adjustViewBounds="true"
+            tools:src="@drawable/ic_launcher_background"
+            android:layout_marginTop="10dp"
+            app:image="@{viewModel.image}"
+            android:contentDescription="@string/acc_formula_img" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

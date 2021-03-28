@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Formula Renderer</string>
+    <string name="msg_connection_error">There was a connection issue, please check your internet and try again!</string>
+    <string name="SERVER_URL" >https://en.wikipedia.org/api/rest_v1/</string>
+    <string name="lbl_dismiss">Dismiss</string>
+    <string name="action_home">Home</string>
+    <string name="RESOURCE_URL" >https://en.wikipedia.org/api/rest_v1/media/math/render/png/</string>
+    <string name="acc_formula_img">Image of Formula</string>
+    <string name="hint_formula_to_search">Formula To Render</string>
+</resources>
