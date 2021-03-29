@@ -3,6 +3,7 @@ package masoumi.formularenderer.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.TypedValue
+import android.widget.EditText
 import androidx.annotation.DimenRes
 import java.io.FileOutputStream
 import java.io.IOException

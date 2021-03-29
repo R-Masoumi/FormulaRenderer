@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragment.HomeFragment">
+    tools:context=".ui.fragment.HomeFragment">
 
     <data>
         <variable
             name="viewModel"
-            type="masoumi.formularenderer.viewmodel.HomeViewModel" />
+            type="masoumi.formularenderer.ui.viewmodel.HomeViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -50,7 +50,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_formula"
             app:layout_constraintStart_toStartOf="@id/til_search"
-            android:adjustViewBounds="true"
             tools:src="@drawable/ic_launcher_background"
             android:layout_marginTop="10dp"
             app:image="@{viewModel.image}"

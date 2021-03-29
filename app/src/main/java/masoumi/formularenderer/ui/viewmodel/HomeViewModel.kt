@@ -1,7 +1,8 @@
-package masoumi.formularenderer.viewmodel
+package masoumi.formularenderer.ui.viewmodel
 
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.runBlocking
 import masoumi.formularenderer.data.CallResult
 import masoumi.formularenderer.data.Formula
 import masoumi.formularenderer.data.net.DataSource
@@ -33,6 +34,11 @@ class HomeViewModel @Inject constructor(val dataSource : DataSource) : ViewModel
 
     fun setImageHash(hash : String){
         liveImage.value = hash
+    }
+
+    suspend fun getFormulasAsync(phrase : String) : List<String>{
+        val formulas = dataSource.getFormulasAsync(phrase)
+        return formulas.map { it.formula }
     }
 
 }

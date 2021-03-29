@@ -1,18 +1,17 @@
-package masoumi.formularenderer.adapter
+package masoumi.formularenderer.ui.adapter
 
 import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.LifecycleOwner
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import masoumi.formularenderer.data.net.DataSource
 
 class SuggestionAdapter(context: Context, @LayoutRes viewRedId: Int,
-                        private val dataSource: DataSource)
+                        private val filterPhrase : suspend (phrase : String) -> List<String>)
     : ArrayAdapter<String>(context, viewRedId) {
     private val data = ArrayList<String>()
-
-    fun getFilterFormula(phrase : String) = dataSource.getFormulasBlocking(phrase)
 
     override fun getCount(): Int {
         return data.size
@@ -23,16 +22,17 @@ class SuggestionAdapter(context: Context, @LayoutRes viewRedId: Int,
     }
 
     override fun getFilter() = object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
+            override fun performFiltering(constraint: CharSequence?): FilterResults = runBlocking {
                 val filterResults = FilterResults()
                 if (constraint != null) {
-                    val filtered = getFilterFormula(constraint.toString())
+                    val trimmedPhrase = constraint.toString().replace("\\s+".toRegex(),"")
+                    val filtered = filterPhrase(trimmedPhrase)
                     data.clear()
-                    data.addAll(filtered.map { it.formula })
+                    data.addAll(filtered)
                     filterResults.values = data
                     filterResults.count = data.size
                 }
-                return filterResults
+                filterResults
             }
 
             override fun publishResults(contraint: CharSequence?, results: FilterResults?) {

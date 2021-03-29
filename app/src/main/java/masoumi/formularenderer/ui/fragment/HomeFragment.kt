@@ -1,25 +1,22 @@
-package masoumi.formularenderer.fragment
+package masoumi.formularenderer.ui.fragment
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.ListAdapter
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
 import com.google.android.material.progressindicator.IndeterminateDrawable
 import dagger.hilt.android.AndroidEntryPoint
 import masoumi.formularenderer.R
-import masoumi.formularenderer.adapter.SuggestionAdapter
+import masoumi.formularenderer.ui.adapter.SuggestionAdapter
 import masoumi.formularenderer.databinding.FragmentHomeBinding
 import masoumi.formularenderer.util.Utility.dipToPixels
-import masoumi.formularenderer.viewmodel.HomeViewModel
+import masoumi.formularenderer.ui.viewmodel.HomeViewModel
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -42,8 +39,9 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         setDrawable()
         val adapter = SuggestionAdapter(requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            viewModel.dataSource)
+            android.R.layout.simple_dropdown_item_1line){
+            viewModel.getFormulasAsync(it)
+        }
         binding.searchBar.setAdapter(adapter)
         return binding.root
     }
@@ -54,7 +52,7 @@ class HomeFragment : Fragment() {
                 it.data?.hash?.let { hash ->
                     viewModel.setImageHash(hash)
                 }
-                it.data?.formula?.let { formula ->
+                it.data?.formatted?.let { formula ->
                     viewModel.setFormula(formula)
                 }
             }
@@ -103,6 +101,6 @@ class HomeFragment : Fragment() {
 
     private fun setQuery(){
         val query = binding.searchBar.text?.toString()
-        if(!query.isNullOrEmpty()){ viewModel.setQuery(query) }
+        if(!query.isNullOrEmpty()){ viewModel.setQuery( query.replace("\\s+".toRegex(),"")) }
     }
 }

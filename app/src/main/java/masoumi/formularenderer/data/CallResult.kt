@@ -1,6 +1,8 @@
 package masoumi.formularenderer.data
 
-data class CallResult<out T> private constructor(private val status: Status, val data: T?,
+data class CallResult<out T> private constructor(private val status: Status,
+                                                 val data: T?,
+                                                 val headers : Map<String,String> = emptyMap(),
                                                  val code : Int? = null,
                                                  val message: String? = null,
                                                  val error : CallError? = null) {
@@ -14,14 +16,16 @@ data class CallResult<out T> private constructor(private val status: Status, val
 
     companion object {
         fun <T> idle(data: T?=null, message: String? = null, code: Int? = null): CallResult<T> {
-            return CallResult(Status.IDLE, data, code, message)
+            return CallResult(Status.IDLE, data, emptyMap(), code, message)
         }
-        fun <T> success(data: T?, message: String? = null, code: Int? = null): CallResult<T> {
-            return CallResult(Status.SUCCESS, data, code, message)
+        fun <T> success(data: T?, headers: Map<String,String> = emptyMap(),
+                        message: String? = null, code: Int? = null): CallResult<T> {
+            return CallResult(Status.SUCCESS, data, headers, code, message)
         }
 
-        fun <T> error(message: String? = null, code: Int? = null, data : T? = null,error: CallError? = null): CallResult<T> {
-            return CallResult(Status.ERROR, data, code, message, error)
+        fun <T> error(message: String? = null, code: Int? = null, data : T? = null,
+                      headers: Map<String,String> = emptyMap(), error: CallError? = null): CallResult<T> {
+            return CallResult(Status.ERROR, data, headers, code, message, error)
         }
 
         fun <T> loading(data: T? = null): CallResult<T> {
@@ -30,7 +34,7 @@ data class CallResult<out T> private constructor(private val status: Status, val
     }
 
     fun <M> copyConvert(converter : (T?)->M?) =
-            CallResult<M>(status,converter(data),code,message)
+            CallResult<M>(status,converter(data), headers,code,message)
 
     fun isIdle() : Boolean =
         status == Status.IDLE

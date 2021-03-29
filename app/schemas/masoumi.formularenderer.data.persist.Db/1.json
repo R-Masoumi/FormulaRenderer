@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0af2a7832d0d2452c048ef4e9e95fdc2",
+    "identityHash": "4bc04d588314f14f66e20dc4f9cdfd81",
     "entities": [
       {
         "tableName": "Formula",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`formula` TEXT NOT NULL, `hash` TEXT, PRIMARY KEY(`formula`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`formula` TEXT NOT NULL, `hash` TEXT, `formatted` TEXT, PRIMARY KEY(`formula`))",
         "fields": [
           {
             "fieldPath": "formula",
@@ -17,6 +17,12 @@
           {
             "fieldPath": "hash",
             "columnName": "hash",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "formatted",
+            "columnName": "formatted",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -34,7 +40,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0af2a7832d0d2452c048ef4e9e95fdc2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4bc04d588314f14f66e20dc4f9cdfd81')"
     ]
   }
 }

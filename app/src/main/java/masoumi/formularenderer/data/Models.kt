@@ -17,9 +17,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.time.LocalDateTime
 
-@JsonClass(generateAdapter = true)
 data class CallError (
-        @Json(name = "detail")
         val error: String? = null
 )
 
@@ -29,9 +27,17 @@ data class CallBody (
         val query: String
 )
 
+@JsonClass(generateAdapter = true)
+data class SuccessResult(
+        val success : Boolean?,
+        val checked : String?,
+        val endsWithDot : Boolean?
+)
+
 @Entity
 data class Formula (
         @PrimaryKey
         val formula : String,
-        val hash: String? = null
+        val hash: String? = null,
+        val formatted : String? = null
 )

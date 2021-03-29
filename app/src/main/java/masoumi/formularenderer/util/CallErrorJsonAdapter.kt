@@ -3,28 +3,24 @@ package masoumi.formularenderer.util
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
-import com.squareup.moshi.Moshi
 import masoumi.formularenderer.data.CallError
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 class CallErrorJsonAdapter : JsonAdapter<CallError>() {
-    private val options = JsonReader.Options.of("detail","details")
+    private val options = JsonReader.Options.of("detail","error","message")
 
     override fun toJson(writer: JsonWriter, value: CallError?) {
         if (value == null) {
-            writer.nullValue()
-        } else {
-            val string = value.error
-            writer.value(string)
+            throw NullPointerException("value was null! Wrap in .nullSafe() to write nullable values.")
         }
+        writer.beginObject()
+        writer.name("error")
+        writer.value(value.error)
+        writer.endObject()
     }
 
-    override fun fromJson(reader: JsonReader): CallError? {
+    override fun fromJson(reader: JsonReader): CallError {
         var errorString : String? = null
-        if (reader.peek() == JsonReader.Token.NULL) {
-            return reader.nextNull<CallError>()
-        }
+        reader.beginObject()
         while (reader.hasNext()){
             if(reader.selectName(options) == -1){
                 reader.skipName()
@@ -41,13 +37,25 @@ class CallErrorJsonAdapter : JsonAdapter<CallError>() {
                             reader.skipName()
                             reader.skipValue()
                         }
+                        else{
+                            reader.beginObject()
+                            while(reader.hasNext()){
+                                if(reader.selectName(options) == -1){
+                                    reader.skipName()
+                                    reader.skipValue()
+                                }
+                                else{
+                                    errorString = reader.nextString()
+                                }
+                            }
+                            reader.endObject()
+                        }
                     }
-                    if(reader.peek() == JsonReader.Token.STRING){
-                        errorString = reader.nextString()
-                    }
+                    reader.endObject()
                 }
             }
         }
+        reader.endObject()
         return CallError(errorString)
     }
 }

@@ -15,7 +15,7 @@ interface Dao {
     fun loadFormulas() : LiveData<List<Formula>>
 
     @Query("SELECT * FROM Formula WHERE formula LIKE :phrase || '%' ORDER BY LENGTH(formula) LIMIT 10")
-    fun loadFormulasBlocking(phrase : String) : List<Formula>
+    suspend fun loadFormulasAsync(phrase : String) : List<Formula>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFormula(formula : Formula) : Long
