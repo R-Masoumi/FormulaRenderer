@@ -5,6 +5,11 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import masoumi.formularenderer.data.CallError
 
+/**
+ * Custom Json adapter for error object.
+ * Considering how wikipedia sends the error message in detail OR detail.error.message
+ * this adapter cannot be generated automatically
+ */
 class CallErrorJsonAdapter : JsonAdapter<CallError>() {
     private val options = JsonReader.Options.of("detail","error","message")
 
@@ -27,12 +32,14 @@ class CallErrorJsonAdapter : JsonAdapter<CallError>() {
                 reader.skipValue()
             }
             else{
+                //check if detail is object or string
                 if(reader.peek() == JsonReader.Token.STRING){
                     errorString = reader.nextString()
                 }
                 else if(reader.peek() == JsonReader.Token.BEGIN_OBJECT){
                     reader.beginObject()
                     while(reader.hasNext()){
+                        //find error object
                         if(reader.selectName(options) == -1){
                             reader.skipName()
                             reader.skipValue()
@@ -40,6 +47,7 @@ class CallErrorJsonAdapter : JsonAdapter<CallError>() {
                         else{
                             reader.beginObject()
                             while(reader.hasNext()){
+                                //find message string
                                 if(reader.selectName(options) == -1){
                                     reader.skipName()
                                     reader.skipValue()

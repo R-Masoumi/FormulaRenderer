@@ -16,7 +16,9 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 
-
+/**
+ * Dagger-Hilt providers for network components
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule{

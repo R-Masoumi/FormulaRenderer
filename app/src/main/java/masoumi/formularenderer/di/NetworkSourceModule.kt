@@ -12,6 +12,11 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import javax.inject.Named
 import javax.inject.Singleton
 
+/**
+ * Dagger-Hilt providers for network source components.
+ * this component can be swapped for debug environments
+ * to provide a mock server to network components instead
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkSourceModule {

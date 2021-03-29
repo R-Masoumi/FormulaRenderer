@@ -15,6 +15,13 @@ import masoumi.formularenderer.R
 import masoumi.formularenderer.util.Utility.save
 import java.io.File
 
+/**
+ * Load Image binding adapter used with data binding,
+ * this method is responsible for loading and saving the bitmap
+ * @param iv actual ImageView to load bitmap into
+ * @param image string representing image hash
+ * @param errorRes optional drawable to set on load failure
+ */
 @BindingAdapter(value = ["app:image",  "app:errorRes"], requireAll = false)
 fun loadImage(iv : ImageView, image : String?, errorRes : Int?) {
     val context = iv.context
@@ -23,6 +30,7 @@ fun loadImage(iv : ImageView, image : String?, errorRes : Int?) {
         val cacheFile = File(context.filesDir, image)
         val req =
             if (cacheFile.exists()) {
+                //try loading from disk is image is already saved
                 ImageRequest.Builder(context)
                     .data(cacheFile)
                     .target { result ->
@@ -30,6 +38,7 @@ fun loadImage(iv : ImageView, image : String?, errorRes : Int?) {
                         iv.setImageBitmap(bitmap)
                     }
             } else {
+                //otherwise load from network and save bitmap
                 ImageRequest.Builder(context)
                     .data(context.getString(R.string.RESOURCE_URL) + image)
                     .target { result ->
@@ -39,6 +48,7 @@ fun loadImage(iv : ImageView, image : String?, errorRes : Int?) {
                     }
             }
 
+        //set a shimmer drawable as loading indicator
         val d = ShimmerDrawable()
         val s = Shimmer.AlphaHighlightBuilder().setDuration(1800).setBaseAlpha(1f)
             .setHighlightAlpha(0.6f).setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
@@ -50,6 +60,7 @@ fun loadImage(iv : ImageView, image : String?, errorRes : Int?) {
         loader.enqueue(req.build())
     }
     else{
+        //set default/error image if hash is null
         iv.setImageResource(errorRes ?: R.mipmap.ic_launcher)
     }
 }

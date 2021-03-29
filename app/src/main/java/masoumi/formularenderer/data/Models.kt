@@ -17,16 +17,25 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.time.LocalDateTime
 
+/**
+ * Model Representing a network call error
+ */
 data class CallError (
         val error: String? = null
 )
 
+/**
+ * Model Representing a check formula call body
+ */
 @JsonClass(generateAdapter = true)
 data class CallBody (
         @Json(name = "q")
         val query: String
 )
 
+/**
+ * Model Representing a check formula successful result
+ */
 @JsonClass(generateAdapter = true)
 data class SuccessResult(
         val success : Boolean?,
@@ -34,6 +43,9 @@ data class SuccessResult(
         val endsWithDot : Boolean?
 )
 
+/**
+ * Entity Model Representing a formula
+ */
 @Entity
 data class Formula (
         @PrimaryKey

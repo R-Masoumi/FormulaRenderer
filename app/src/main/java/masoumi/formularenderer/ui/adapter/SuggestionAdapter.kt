@@ -4,10 +4,14 @@ import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import androidx.annotation.LayoutRes
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import masoumi.formularenderer.data.net.DataSource
 
+/**
+ * Suggestion Array Adapter, responsible for providing suggestions to an AutoCompleteTextView
+ * @param context UI context
+ * @param viewRedId layout resource id for viewing each suggestion
+ * @param filterPhrase a suspending function to call in a worker threat and receive suggestion list
+ */
 class SuggestionAdapter(context: Context, @LayoutRes viewRedId: Int,
                         private val filterPhrase : suspend (phrase : String) -> List<String>)
     : ArrayAdapter<String>(context, viewRedId) {

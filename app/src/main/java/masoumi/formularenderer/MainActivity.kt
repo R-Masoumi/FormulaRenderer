@@ -20,6 +20,10 @@ import masoumi.formularenderer.util.MessageUtils
 import masoumi.formularenderer.util.MessageUtils.BR_MESSAGE
 import masoumi.formularenderer.util.MessageUtils.EXTRA_MESSAGE
 
+/**
+ * Application Main Activity,
+ * Responsible for setting UI frame and listening to application wide message broadcasts
+ */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -42,6 +46,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
+    /**
+     * Setup message broadcast receiver
+     */
     private fun setupMessageReceiver() {
         msgReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -52,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * show message in snackbar
+     */
     private fun showMessage(msg: String, type: MessageUtils.MessageType){
 
         if (msg != snackbarMessage || !isSnackbarShowing) {

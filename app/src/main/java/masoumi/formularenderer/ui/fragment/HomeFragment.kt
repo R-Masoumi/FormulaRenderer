@@ -1,9 +1,6 @@
 package masoumi.formularenderer.ui.fragment
 
-import android.R.attr.bitmap
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -24,14 +21,16 @@ import masoumi.formularenderer.ui.adapter.SuggestionAdapter
 import masoumi.formularenderer.ui.viewmodel.HomeViewModel
 import masoumi.formularenderer.util.Utility.dipToPixels
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
-
+/**
+ * HomeFragment that shows the search bar and views rendered formula
+ */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+    //drawable icons for loading and submitting.
     private var progressDrawable : IndeterminateDrawable<CircularProgressIndicatorSpec>? = null
     private var sendDrawable : Drawable? = null
 
@@ -69,9 +68,11 @@ class HomeFragment : Fragment() {
             }
         }
 
+        //fetch formula query and text inside editText, if app was on pause
         savedInstanceState?.getString("query")?.let { viewModel.setQuery(it) }
         binding.searchBar.setText(savedInstanceState?.getString("text"))
 
+        //switch button drawable when loading
         viewModel.loading.observe(viewLifecycleOwner){
             if (it) {
                 binding.tilSearch.startIconDrawable = progressDrawable
@@ -80,14 +81,17 @@ class HomeFragment : Fragment() {
             }
         }
 
+        //start checking formula on button click
         binding.tilSearch.setStartIconOnClickListener {
             setQuery()
         }
 
+        //start checking formula on suggestion click
         binding.searchBar.setOnItemClickListener { _, _, _, _ ->
             setQuery()
         }
 
+        //start checking formula on virtual keyboard done click
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 setQuery()
@@ -96,8 +100,11 @@ class HomeFragment : Fragment() {
             return@setOnEditorActionListener false
         }
 
+        //start share process on share button click
         binding.btnShare.setOnClickListener {
             val context = requireContext()
+
+            //save image from internal to cache to prepare sharing
             val path = "${viewModel.formula.value ?: "formula"}.png"
             try {
                 context.openFileInput(viewModel.image.value.orEmpty()).use { orig ->
@@ -113,6 +120,7 @@ class HomeFragment : Fragment() {
             val file = File(context.cacheDir, path)
             val contentUri: Uri? = FileProvider.getUriForFile(context, context.getString(R.string.PROVIDER_AUTHORITY), file)
 
+            //send share intent
             if (contentUri != null) {
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
@@ -126,10 +134,13 @@ class HomeFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        //save query and edit text content on app exit to memory
         outState.putString("query",viewModel.getQuery())
         outState.putString("text",binding.searchBar.toString())
     }
 
+
+    //set loading and submit drawables
     private fun setDrawable(){
         val context = requireContext()
         val progressIndicatorSpec = CircularProgressIndicatorSpec(context, null)
@@ -146,6 +157,7 @@ class HomeFragment : Fragment() {
         sendDrawable = ContextCompat.getDrawable(context, R.drawable.ic_submit)
     }
 
+    //trim and set query to be checked
     private fun setQuery(){
         val query = binding.searchBar.text?.toString()
         if(!query.isNullOrEmpty()){ viewModel.setQuery(query.replace("\\s+".toRegex(), "")) }

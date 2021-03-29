@@ -14,11 +14,29 @@ import retrofit2.Response
 import retrofit2.http.*
 import java.lang.Exception
 
+/**
+ * Retrofit Api interface
+ */
 interface Api{
+    /**
+     * Check formula on wiki Rest Api and returns image hash in header
+     * @param info CallBody object which is the json request body
+     * @return request response
+     */
     @POST("media/math/check/tex")
     suspend fun postCheckAsync(@Body info : CallBody) : Response<SuccessResult>
 
+    @Suppress("BlockingMethodInNonBlockingContext")
     companion object {
+        /**
+         * Helper method which can be used to safely do an API call from the interface,
+         * This method will automatically send error message broadcasts on failure and
+         * handle exceptions.
+         * @param context application context
+         * @param moshi moshi instance used to get adapter for handling error json
+         * @param call the actual suspending network call
+         * @return CallResult instance with transformed header and data
+         */
         suspend fun <T : Any> apiCall(context : Context, moshi: Moshi,
                                       call: suspend () -> Response<T>): CallResult<T> {
             try{
