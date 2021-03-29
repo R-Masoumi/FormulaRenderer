@@ -19,15 +19,6 @@ import java.io.File
 fun loadImage(iv : ImageView, image : String?, errorRes : Int?) {
     val context = iv.context
     if(image != null){
-//        iv.load(context.getString(R.string.RESOURCE_URL)+image) {
-//            val d = ShimmerDrawable()
-//            val s = Shimmer.AlphaHighlightBuilder().setDuration(1800).setBaseAlpha(1f)
-//                .setHighlightAlpha(0.6f).setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
-//                .setAutoStart(true).build()
-//            d.setShimmer(s)
-//            placeholder(d)
-//            error(errorRes ?: R.mipmap.ic_launcher)
-//        }
         val loader = ImageLoader.Builder(context).build()
         val cacheFile = File(context.filesDir, image)
         val req =

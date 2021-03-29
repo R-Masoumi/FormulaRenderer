@@ -13,6 +13,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -46,13 +47,28 @@
             android:text="@{viewModel.formula}"
             tools:text="Formula goes here"/>
         <ImageView
+            android:id="@+id/iv_formula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_formula"
             app:layout_constraintStart_toStartOf="@id/til_search"
+            android:scaleType="fitCenter"
             tools:src="@drawable/ic_launcher_background"
             android:layout_marginTop="10dp"
             app:image="@{viewModel.image}"
             android:contentDescription="@string/acc_formula_img" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_share"
+            android:contentDescription="@string/lbl_share"
+            android:layout_margin="5dp"
+            android:visibility="@{viewModel.image != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/iv_formula"
+            app:layout_constraintEnd_toEndOf="@id/iv_formula"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>
