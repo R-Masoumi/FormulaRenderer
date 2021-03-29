@@ -44,7 +44,7 @@ fun loadImage(iv : ImageView, image : String?, errorRes : Int?) {
             .setHighlightAlpha(0.6f).setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
             .setAutoStart(true).build()
         d.setShimmer(s)
-        req.placeholder(d)
+        iv.setImageDrawable(d)
         req.error(errorRes ?: R.mipmap.ic_launcher)
 
         loader.enqueue(req.build())

@@ -69,6 +69,9 @@ class HomeFragment : Fragment() {
             }
         }
 
+        savedInstanceState?.getString("query")?.let { viewModel.setQuery(it) }
+        binding.searchBar.setText(savedInstanceState?.getString("text"))
+
         viewModel.loading.observe(viewLifecycleOwner){
             if (it) {
                 binding.tilSearch.startIconDrawable = progressDrawable
@@ -119,6 +122,12 @@ class HomeFragment : Fragment() {
                 startActivity(Intent.createChooser(shareIntent, "Choose an app"))
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("query",viewModel.getQuery())
+        outState.putString("text",binding.searchBar.toString())
     }
 
     private fun setDrawable(){

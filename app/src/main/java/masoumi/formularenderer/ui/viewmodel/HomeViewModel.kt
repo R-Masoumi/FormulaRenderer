@@ -25,6 +25,8 @@ class HomeViewModel @Inject constructor(val dataSource : DataSource) : ViewModel
             liveQuery.value = query
     }
 
+    fun getQuery() = liveQuery.value
+
     val formula : LiveData<String> = liveFormula
     val image : LiveData<String> = liveImage
 
