@@ -28,10 +28,24 @@ android {
         }
     }
 
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword 'letmepass'
+            storeFile file('key.jks')
+            storePassword 'letmepass'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.config
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.config
+            minifyEnabled false
         }
     }
     compileOptions {
